@@ -34,7 +34,7 @@ export function FormLogin() {
                 secureTextEntry
             />
             <View style={styles.buttonContainer}>
-                <Button title="Entrar" color={colors.button} onPress={handleLogin} />
+                <Button title="Entrar" backgroundColor={colors.button} onPress={handleLogin}  />
             </View>
         </View>
     );

@@ -1,11 +1,10 @@
-import { Text, View } from "react-native";
+import { Header } from "@/components/Header";
+import { ScreenContainer } from "@/components/ScreenContainer";
 
 const Pedido = () => {
-  return <>
-    <View className="flex-1 items-center justify-center">
-        <Text className="text-2xl font-bold">Pedido</Text>
-    </View>
-  </>;
+  return <ScreenContainer>
+   <Header title="Pedidos" description="Gerencie os pedidos dos clientes" />
+  </ScreenContainer>;
 }
 
 
