@@ -46,4 +46,19 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
     },
+    comprovanteButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+    },
+    comprovanteButtonText: {
+        marginLeft: 4,
+        color: "#FFFFFF",
+        fontSize: 16,
+        fontWeight: "bold",
+        textAlign: "center",
+    },
 });

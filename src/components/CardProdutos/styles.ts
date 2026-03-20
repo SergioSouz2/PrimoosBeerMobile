@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
         width: CARD_WIDTH,
         height: 90,
         borderRadius: 8,
+        borderWidth: 1,
         overflow: "hidden", // importante pro borderRadius funcionar
     },
 

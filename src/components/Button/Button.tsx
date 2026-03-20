@@ -3,7 +3,7 @@ import { Text, TouchableOpacity } from "react-native";
 import { styles } from "./style";
 
 interface ButtonProps {
-    preset?: "login" | "criar" | "adicionar";
+    preset?: "login" | "criar" | "adicionar" | "comprovante"; // Adicione outros presets conforme necessário
     backgroundColor?: string;
     color?: string;
     onPress?: () => void;
@@ -45,6 +45,19 @@ export function Button({ backgroundColor, onPress, preset = "login", color }: Bu
 
                     <Text style={styles.criarButtonText}>
                         Adicionar
+                    </Text>
+                </TouchableOpacity>
+            )
+        }
+        {
+            preset === "comprovante" && (
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={[styles.comprovanteButton, { backgroundColor: backgroundColor }]}
+                >
+                    <Ionicons name="document-text-outline" size={24} color={color} />
+                    <Text style={styles.comprovanteButtonText}>
+                        Gerar Comprovante
                     </Text>
                 </TouchableOpacity>
             )

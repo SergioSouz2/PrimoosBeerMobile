@@ -1,4 +1,5 @@
 import { CardProdutos } from "@/components/CardProdutos";
+import { useRouter } from "expo-router";
 import { FlatList } from "react-native";
 
 export const BEBIDAS_MOCK = [
@@ -51,6 +52,19 @@ export const BEBIDAS_MOCK = [
 
 
 export function ListaProdutos() {
+    const router = useRouter();
+
+    function handlePressProduto(produto: any) {
+        console.log("Produto selecionado:", produto.id);
+
+        // Navega para a tela passando o ID como parâmetro de busca (query param)
+        router.push({
+            pathname: "/produto-detalhe",
+            params: { id: produto.id }
+        });
+    }
+
+
     return (
         <FlatList
             data={BEBIDAS_MOCK}
@@ -67,7 +81,7 @@ export function ListaProdutos() {
             }}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
-                <CardProdutos name={item.nome} price={item.preco} imageUrl={item.image} />
+                <CardProdutos name={item.nome} price={item.preco} imageUrl={item.image} onpress={() => handlePressProduto(item)} />
             )}
         />
     );

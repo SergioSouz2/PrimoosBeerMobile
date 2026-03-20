@@ -1,18 +1,19 @@
 import { useTheme } from "@/hook/useTheme";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
 interface CardProdutosProps {
     name: string;
     price: number;
     imageUrl: string;
+    onpress?: () => void;
 }
 
-export function CardProdutos({ name, price, imageUrl }: CardProdutosProps) {
+export function CardProdutos({ name, price, imageUrl, onpress }: CardProdutosProps) {
     const { colors } = useTheme();
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={[styles.container, { borderColor: colors.border }]} onPress={onpress}>
             <Image
                 source={{ uri: imageUrl }}
                 style={StyleSheet.absoluteFillObject} // Faz a imagem ocupar o card todo
@@ -24,6 +25,6 @@ export function CardProdutos({ name, price, imageUrl }: CardProdutosProps) {
                     <Text style={[styles.priceText, { color: colors.textLight }]}>${price.toFixed(2)}</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
