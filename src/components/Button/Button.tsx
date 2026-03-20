@@ -4,7 +4,6 @@ import { styles } from "./style";
 
 interface ButtonProps {
     preset?: "login" | "criar" | "adicionar";
-    title: string;
     backgroundColor?: string;
     color?: string;
     onPress?: () => void;
@@ -12,13 +11,13 @@ interface ButtonProps {
 
 
 
-export function Button({ title, backgroundColor, onPress, preset = "login", color }: ButtonProps) {
+export function Button({ backgroundColor, onPress, preset = "login", color }: ButtonProps) {
     preset = preset || "login";
     return (<>
         {
             preset === "login" && (
                 <TouchableOpacity style={[styles.button, { backgroundColor: backgroundColor }]} onPress={onPress}>
-                    <Text style={styles.buttonText}>{title} </Text>
+                    <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
             )}
 
@@ -31,15 +30,22 @@ export function Button({ title, backgroundColor, onPress, preset = "login", colo
                     <Ionicons name="add-circle-outline" size={24} color={color} />
 
                     <Text style={styles.criarButtonText}>
-                        {title}
+                        Criar
                     </Text>
                 </TouchableOpacity>
             )
         }
         {
             preset === "adicionar" && (
-                <TouchableOpacity style={[styles.button, { backgroundColor: backgroundColor }]} onPress={onPress}>
-                    <Text style={styles.buttonText}>{title} </Text>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={[styles.criarButton, { backgroundColor: backgroundColor }]}
+                >
+                    <Ionicons name="add-circle-outline" size={24} color={color} />
+
+                    <Text style={styles.criarButtonText}>
+                        Adicionar
+                    </Text>
                 </TouchableOpacity>
             )
         }
