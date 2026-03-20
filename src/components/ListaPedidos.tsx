@@ -76,7 +76,7 @@ export function ListaPedidos() {
         console.log("Pedido selecionado:", pedido);
         // Aqui você pode navegar para a tela de detalhes do pedido, passando o ID ou os dados necessários
         router.push({
-            pathname: "/pedido-detalhe",
+            pathname: "/(admin)/pedido/[id]", // ✅ nova rota
             params: { id: pedido.id }
         });
 

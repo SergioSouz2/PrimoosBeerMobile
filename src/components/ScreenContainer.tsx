@@ -16,6 +16,7 @@ export function ScreenContainer({ children }: Props) {
         backgroundColor: colors.background,
         paddingHorizontal: 24,
       }}
+      edges={['top', 'left', 'right']}
     >
       {children}
     </SafeAreaView>

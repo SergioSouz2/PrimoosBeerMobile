@@ -4,7 +4,6 @@ import { Tabs } from "expo-router";
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
-
 interface Tab {
   name: string;
   title: string;
@@ -18,42 +17,27 @@ const tabs: Tab[] = [
   {
     name: "pedido",
     title: "Pedidos",
-    icon: {
-      focused: "clipboard",
-      unfocused: "clipboard-outline",
-    },
+    icon: { focused: "clipboard", unfocused: "clipboard-outline" },
   },
   {
     name: "produto",
     title: "Produtos",
-    icon: {
-      focused: "list",
-      unfocused: "list-outline",
-    },
+    icon: { focused: "list", unfocused: "list-outline" },
   },
   {
     name: "promocao",
     title: "Promoções",
-    icon: {
-      focused: "pricetag",
-      unfocused: "pricetag-outline",
-    },
+    icon: { focused: "pricetag", unfocused: "pricetag-outline" },
   },
   {
     name: "relatorio",
     title: "Relatórios",
-    icon: {
-      focused: "bar-chart",
-      unfocused: "bar-chart-outline",
-    },
+    icon: { focused: "bar-chart", unfocused: "bar-chart-outline" },
   },
   {
     name: "perfil",
     title: "Perfil",
-    icon: {
-      focused: "person",
-      unfocused: "person-outline",
-    },
+    icon: { focused: "person", unfocused: "person-outline" },
   },
 ];
 
@@ -90,10 +74,6 @@ export default function TabAdminLayout() {
           }}
         />
       ))}
-
-      {/* esconder telas internas */}
-      <Tabs.Screen name="pedido-detalhe" options={{ href: null }} />
-      <Tabs.Screen name="produto-detalhe" options={{ href: null }} />
     </Tabs>
   );
 }

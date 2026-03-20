@@ -13,7 +13,6 @@ export default function Layout() {
 
   useEffect(() => {
     NavigationBar.setVisibilityAsync("hidden");
-    NavigationBar.setBehaviorAsync("overlay-swipe");
 
   }, []);
 

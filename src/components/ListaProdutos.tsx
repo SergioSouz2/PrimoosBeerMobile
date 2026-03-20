@@ -59,7 +59,7 @@ export function ListaProdutos() {
 
         // Navega para a tela passando o ID como parâmetro de busca (query param)
         router.push({
-            pathname: "/produto-detalhe",
+            pathname: "/(admin)/produto/[id]", // ✅ nova rota
             params: { id: produto.id }
         });
     }
