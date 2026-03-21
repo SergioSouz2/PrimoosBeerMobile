@@ -31,7 +31,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             .eq("id", userId)
             .single();
 
-        console.log("Perfil:", data); // 👈 adiciona isso
 
         if (data) setUser(data);
     }

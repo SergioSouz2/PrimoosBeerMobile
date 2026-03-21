@@ -106,24 +106,19 @@ export default function DetalhePedido() {
 
     async function handleGerarComprovante() {
         if (!pedido) return;
-        console.log("Gerando comprovante..."); // 👈
         setGerando(true);
 
         const data = new Date(pedido.created_at);
         const dataFormatada = `${data.toLocaleDateString("pt-BR")} as ${String(data.getHours()).padStart(2, "0")}:${String(data.getMinutes()).padStart(2, "0")}`;
 
         try {
-            console.log("Gerando HTML..."); // 👈
             const html = gerarHtml(pedido, dataFormatada);
-            console.log("Imprimindo..."); // 👈
             const { uri } = await Print.printToFileAsync({ html });
-            console.log("URI:", uri); // 👈
             await Sharing.shareAsync(uri, {
                 mimeType: "application/pdf",
                 dialogTitle: "Compartilhar Comprovante",
             });
         } catch (err) {
-            console.error("Erro:", err); // 👈
         } finally {
             setGerando(false);
         }
