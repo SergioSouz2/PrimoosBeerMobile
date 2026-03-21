@@ -1,17 +1,24 @@
+import { useAuth } from "@/context/AuthContext";
 import { Redirect } from "expo-router";
-
-type Role = "admin" | "user" | null;
+import { ActivityIndicator, View } from "react-native";
 
 export default function Index() {
-  const role = "admin" as Role;
-  // const role = "user" as Role;
-  // const role = null as Role;
+  const { session, user, loading } = useAuth();
 
-  if (role === null) {
+  // Aguarda sessão E perfil carregarem
+  if (loading || (session && !user)) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (!session) {
     return <Redirect href="/(auth)/login" />;
   }
 
-  if (role === "admin") {
+  if (user?.role === "admin") {
     return <Redirect href="/(admin)/pedido" />;
   }
 

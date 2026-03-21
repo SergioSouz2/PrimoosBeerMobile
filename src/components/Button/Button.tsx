@@ -26,6 +26,7 @@ export function Button({ backgroundColor, onPress, preset = "login", color }: Bu
                 <TouchableOpacity
                     activeOpacity={0.7}
                     style={[styles.criarButton, { backgroundColor: backgroundColor }]}
+                    onPress={onPress}
                 >
                     <Ionicons name="add-circle-outline" size={24} color={color} />
 
@@ -40,6 +41,7 @@ export function Button({ backgroundColor, onPress, preset = "login", color }: Bu
                 <TouchableOpacity
                     activeOpacity={0.7}
                     style={[styles.criarButton, { backgroundColor: backgroundColor }]}
+                    onPress={onPress}
                 >
                     <Ionicons name="add-circle-outline" size={24} color={color} />
 
@@ -54,6 +56,7 @@ export function Button({ backgroundColor, onPress, preset = "login", color }: Bu
                 <TouchableOpacity
                     activeOpacity={0.7}
                     style={[styles.comprovanteButton, { backgroundColor: backgroundColor }]}
+                    onPress={onPress} // 👈 adiciona isso
                 >
                     <Ionicons name="document-text-outline" size={24} color={color} />
                     <Text style={styles.comprovanteButtonText}>

@@ -5,7 +5,7 @@ import { styles } from "./styles";
 interface CardProdutosProps {
     name: string;
     price: number;
-    imageUrl: string;
+    imageUrl?: string;
     onpress?: () => void;
 }
 

@@ -1,14 +1,14 @@
+import { Pedido } from "@/hook/usePedidos";
 import { useTheme } from "@/hook/useTheme";
 import { Text, TouchableOpacity, View } from "react-native";
-import { Pedido } from "../ListaPedidos";
 import { styles } from "./styles";
 
-interface CardProdutosProps {
+interface CardPedidosProps {
     pedido: Pedido;
     onPress?: () => void;
 }
 
-export function CardPedidos({ pedido, onPress }: CardProdutosProps) {
+export function CardPedidos({ pedido, onPress }: CardPedidosProps) {
     const { colors } = useTheme();
 
     const getStatusColor = () => {
@@ -20,25 +20,33 @@ export function CardPedidos({ pedido, onPress }: CardProdutosProps) {
         }
     };
 
+    const data = new Date(pedido.created_at);
+    const dataFormatada = data.toLocaleDateString("pt-BR");
+    const horas = String(data.getHours()).padStart(2, "0");
+    const minutos = String(data.getMinutes()).padStart(2, "0");
+
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.container, { backgroundColor: colors.inputBackground || '#F3F4F6', borderColor: colors.border || '#E5E7EB' }]}>
-            {/* Linha Superior: Numero e Status */}
+        <TouchableOpacity
+            onPress={onPress}
+            style={[styles.container, { backgroundColor: colors.inputBackground, borderColor: colors.border }]}
+        >
+            {/* Linha Superior: ID e Status */}
             <View style={styles.header}>
                 <Text style={[styles.nameText, { color: colors.text }]}>
-                    Pedido {pedido.numeroPedido}
+                    Pedido #{pedido.id.slice(0, 8).toUpperCase()}
                 </Text>
                 <View style={[styles.statusBadge, { backgroundColor: getStatusColor() }]}>
-                    <Text style={styles.statusText}>{pedido.status}</Text>
+                    <Text style={styles.statusText}>{pedido.status.toUpperCase()}</Text>
                 </View>
             </View>
 
-            {/* Linha Inferior: Data e Preço */}
+            {/* Linha Inferior: Data e Total */}
             <View style={styles.footerRow}>
-                <Text style={[styles.dateText, { color: colors.textSecondary || '#666' }]}>
-                    {pedido.data.toLocaleDateString('pt-BR')} às {pedido.data.getHours()}:{pedido.data.getMinutes()}
+                <Text style={[styles.dateText, { color: colors.textSecondary }]}>
+                    {dataFormatada} às {horas}:{minutos}
                 </Text>
-                <Text style={[styles.priceText, { color: colors.primary || '#000' }]}>
-                    R$ {pedido.total.toFixed(2).replace('.', ',')}
+                <Text style={[styles.priceText, { color: colors.primary }]}>
+                    R$ {pedido.total.toFixed(2).replace(".", ",")}
                 </Text>
             </View>
         </TouchableOpacity>

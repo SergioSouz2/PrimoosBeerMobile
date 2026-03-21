@@ -1,18 +1,37 @@
 import { useTheme } from "@/hook/useTheme";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { ActivityIndicator, Alert, StyleSheet, TextInput, View } from "react-native";
 import { Button } from "./Button/Button";
 
 export function FormLogin() {
     const { colors } = useTheme();
-
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = () => {
-        console.log("Email:", email);
-        console.log("Senha:", password);
-    };
+    async function handleLogin() {
+        if (!email || !password) {
+            Alert.alert("Atenção", "Preencha email e senha.");
+            return;
+        }
+
+        setLoading(true);
+
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+        setLoading(false);
+
+        if (error) {
+            Alert.alert("Erro ao entrar", "Email ou senha incorretos.");
+            return;
+        }
+
+        // O AuthContext vai detectar a sessão e o index.tsx redireciona automaticamente
+        router.replace("/");
+    }
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -34,16 +53,18 @@ export function FormLogin() {
                 secureTextEntry
             />
             <View style={styles.buttonContainer}>
-                <Button title="Entrar" backgroundColor={colors.button} onPress={handleLogin}  />
+                {loading ? (
+                    <ActivityIndicator color={colors.primary} size="large" />
+                ) : (
+                    <Button backgroundColor={colors.button} onPress={handleLogin} />
+                )}
             </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: "100%",
-    },
+    container: { width: "100%" },
     input: {
         borderWidth: 1,
         borderRadius: 8,

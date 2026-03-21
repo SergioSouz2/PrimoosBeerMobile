@@ -5,7 +5,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 
 const Login = () => {
   const { colors } = useTheme();
- 
+
   return (
     <ScreenContainer >
       <View style={styles.logoContainer}>
@@ -15,7 +15,7 @@ const Login = () => {
         />
       </View>
       <Text style={[styles.title, { color: colors.textPrimary }]}>Bem-vindo(a)</Text>
-      <Text style={[styles.description, { color: colors.textPrimary }]}>Entre com sua email e senha</Text>
+      <Text style={[styles.description, { color: colors.textPrimary }]}>Entre com seu email e senha</Text>
 
       <FormLogin />
 
