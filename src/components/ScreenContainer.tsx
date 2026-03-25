@@ -15,6 +15,7 @@ export function ScreenContainer({ children }: Props) {
         flex: 1,
         backgroundColor: colors.background,
         paddingHorizontal: 24,
+        paddingTop: 16,
       }}
       edges={['top', 'left', 'right']}
     >
