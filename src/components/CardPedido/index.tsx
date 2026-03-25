@@ -1,5 +1,6 @@
 import { Pedido } from "@/hook/usePedidos";
 import { useTheme } from "@/hook/useTheme";
+import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
@@ -9,6 +10,8 @@ interface CardPedidosProps {
 }
 
 export function CardPedidos({ pedido, onPress }: CardPedidosProps) {
+
+    const [atualizandoStatus, setAtualizandoStatus] = useState(false);
     const { colors } = useTheme();
 
     const getStatusColor = () => {
@@ -19,6 +22,7 @@ export function CardPedidos({ pedido, onPress }: CardPedidosProps) {
             default: return "#94a3b8";
         }
     };
+
 
     const data = new Date(pedido.created_at);
     const dataFormatada = data.toLocaleDateString("pt-BR");

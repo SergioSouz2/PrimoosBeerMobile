@@ -7,7 +7,7 @@ import * as Print from "expo-print";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import * as Sharing from "expo-sharing";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface ItemPedido {
     id: string;
@@ -34,6 +34,21 @@ export default function DetalhePedido() {
     const [pedido, setPedido] = useState<Pedido | null>(null);
     const [loading, setLoading] = useState(true);
     const [gerando, setGerando] = useState(false);
+
+
+    async function atualizarStatus(id: string, status: string) {
+        const { error } = await supabase
+            .from("pedidos")
+            .update({ status })
+            .eq("id", id);
+
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+        router.back(); // 👈 volta pra tela anterior
+    }
 
     useEffect(() => {
         async function carregarPedido() {
@@ -159,6 +174,45 @@ export default function DetalhePedido() {
                 <View style={{ width: 40 }} />
             </View>
 
+            {pedido.status === "pendente" && (
+                <>
+                    <View style={styles.actions}>
+                        <TouchableOpacity
+                            style={[styles.button, { backgroundColor: colors.secondary }]}
+                            onPress={() => atualizarStatus(pedido.id, "preparando")}
+                        >
+                            <Text style={styles.text}>Preparar</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={[styles.button, { backgroundColor: colors.error }]}
+                            onPress={() => atualizarStatus(pedido.id, "cancelado")}
+                        >
+                            <Text style={styles.text}>Cancelar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </>
+            )}
+
+            {pedido.status === "preparando" && (
+                <View style={styles.actions}>
+                    <TouchableOpacity
+                        style={[styles.button, { backgroundColor: colors.success }]}
+                        onPress={() => atualizarStatus(pedido.id, "entregue")}
+                    >
+                        <Text style={styles.text}>Entregar</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[styles.button, { backgroundColor: colors.error }]}
+                        onPress={() => atualizarStatus(pedido.id, "cancelado")}
+                    >
+                        <Text style={styles.text}>Cancelar</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+
+
             <FlatList
                 data={pedido.pedido_itens}
                 keyExtractor={(item) => item.id}
@@ -217,4 +271,35 @@ const styles = StyleSheet.create({
     totalValue: { fontSize: 22, fontWeight: "bold" },
     footer: { paddingBottom: 40 },
     center: { flex: 1, alignItems: "center", justifyContent: "center" },
+    actions: {
+        flexDirection: "row", // 👈 ISSO faz ficar lado a lado
+        gap: 10,
+        marginTop: 10,
+    },
+
+    button: {
+        flex: 1, // 👈 divide espaço igual
+        height: 44,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    buttonPrimary: {
+        backgroundColor: "#3b82f6",
+    },
+
+    buttonDanger: {
+        backgroundColor: "#ef4444",
+    },
+
+    text: {
+        color: "#fff",
+        fontWeight: "600",
+    },
+
+    buttonSuccess: {
+        backgroundColor: "#22c55e", // verde
+    },
+
 });
