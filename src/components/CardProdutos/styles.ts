@@ -28,12 +28,17 @@ export const styles = StyleSheet.create({
     },
 
     nameText: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "bold",
     },
     priceText: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "bold",
     },
+
+    estoqueText: {
+        fontSize: 10,
+        fontWeight: "bold",
+    }
 
 });

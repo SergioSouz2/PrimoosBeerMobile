@@ -20,7 +20,7 @@ export function FormLogin() {
 
         setLoading(true);
 
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
         setLoading(false);
 
@@ -29,8 +29,22 @@ export function FormLogin() {
             return;
         }
 
-        // O AuthContext vai detectar a sessão e o index.tsx redireciona automaticamente
-        router.replace("/");
+        // Verifica se o usuário precisa completar o 2FA
+        if (data.session?.user) {
+            const { data: factorsData } = await supabase.auth.mfa.listFactors();
+            const totpFactor = factorsData?.totp?.find((f) => f.status === "verified");
+
+            if (totpFactor) {
+                // Usuário já tem 2FA configurado — pede o código
+                router.replace({
+                    pathname: "/(auth)/Verificar2fa",
+                    params: { factorId: totpFactor.id },
+                });
+            } else {
+                // Usuário ainda não configurou 2FA — vai para configuração
+                router.replace("/(auth)/Configurar2fa");
+            }
+        }
     }
 
     return (

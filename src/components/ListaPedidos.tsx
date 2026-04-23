@@ -18,7 +18,7 @@ export function ListaPedidos({ pedidos, loading }: ListaPedidosProps) {
         });
     }
 
-    if (loading) {
+    if (loading) {                                                                                                                                                                                                                                                                                                                                  
         return (
             <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
                 <ActivityIndicator size="large" />

@@ -4,12 +4,13 @@ import { styles } from "./styles";
 
 interface CardProdutosProps {
     name: string;
+    estoque: number;
     price: number;
     imageUrl?: string;
     onpress?: () => void;
 }
 
-export function CardProdutos({ name, price, imageUrl, onpress }: CardProdutosProps) {
+export function CardProdutos({ name, estoque, price, imageUrl, onpress }: CardProdutosProps) {
     const { colors } = useTheme();
 
     return (
@@ -22,6 +23,7 @@ export function CardProdutos({ name, price, imageUrl, onpress }: CardProdutosPro
             <View style={styles.overlay}>
                 <View style={styles.content}>
                     <Text style={[styles.nameText, { color: colors.textLight }]}>{name}</Text>
+                    <Text style={[styles.estoqueText, { color: colors.textLight }]}>{estoque} em estoque</Text>
                     <Text style={[styles.priceText, { color: colors.textLight }]}>${price.toFixed(2)}</Text>
                 </View>
             </View>

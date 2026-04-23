@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/context/AuthContext";
+import { CarrinhoProvider } from "@/context/CarrinhoContext";
 import { DarkAppTheme, LightTheme } from "@/theme/theme";
 import { ThemeProvider } from "@react-navigation/native";
 import * as NavigationBar from "expo-navigation-bar";
@@ -17,8 +18,11 @@ export default function Layout() {
   return (
     <AuthProvider>
       <ThemeProvider value={scheme === "dark" ? DarkAppTheme : LightTheme}>
-        <StatusBar style={scheme === "dark" ? "light" : "dark"} />
-        <Stack screenOptions={{ headerShown: false }} />
+        <CarrinhoProvider>
+
+          <StatusBar style={scheme === "dark" ? "light" : "dark"} />
+          <Stack screenOptions={{ headerShown: false }} />
+        </CarrinhoProvider>
       </ThemeProvider>
     </AuthProvider>
   );

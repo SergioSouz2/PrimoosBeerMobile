@@ -44,6 +44,7 @@ export function ListaProdutos({ produtos, loading }: ListaProdutosProps) {
             renderItem={({ item }) => (
                 <CardProdutos
                     name={item.nome}
+                    estoque={item.estoque}
                     price={item.preco}
                     imageUrl={item.foto ?? undefined}
                     onpress={() => handlePressProduto(item)}
