@@ -19,6 +19,7 @@ export function useProdutos() {
         const { data, error } = await supabase
             .from("produtos")
             .select("id, nome, preco, foto, estoque")
+            .eq("ativo", true)
             .order("nome");
 
         if (error) {

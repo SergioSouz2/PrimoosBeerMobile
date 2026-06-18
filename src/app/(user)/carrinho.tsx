@@ -63,17 +63,15 @@ export default function Carrinho() {
               .insert(itens);
 
             if (itensError) {
-              Alert.alert("Erro", "Não foi possível salvar os itens do pedido.");
+              await supabase.from("pedidos").delete().eq("id", pedido.id);
+
+              const mensagem = itensError.message.includes("Estoque insuficiente")
+                ? "Um ou mais produtos não têm estoque suficiente."
+                : "Não foi possível salvar os itens do pedido.";
+
+              Alert.alert("Erro", mensagem);
               setFinalizando(false);
               return;
-            }
-
-            // Atualiza o estoque de cada produto
-            for (const item of items) {
-              await supabase.rpc("decrementar_estoque", {
-                p_produto_id: item.produto_id,
-                p_quantidade: item.quantidade,
-              });
             }
 
             limpar();

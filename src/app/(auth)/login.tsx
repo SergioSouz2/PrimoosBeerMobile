@@ -1,33 +1,58 @@
 import { FormLogin } from "@/components/FormLogin";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { useTheme } from "@/hook/useTheme";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 const Login = () => {
   const { colors } = useTheme();
 
   return (
-    <ScreenContainer >
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("@/assets/logo.png")}
-          style={styles.logo}
-        />
-      </View>
-      <Text style={[styles.title, { color: colors.textPrimary }]}>Bem-vindo(a)</Text>
-      <Text style={[styles.description, { color: colors.textPrimary }]}>Entre com seu email e senha</Text>
+    <ScreenContainer>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "android" ? 24 : 0}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scroll}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.logoContainer}>
+            <Image source={require("@/assets/logo.png")} style={styles.logo} />
+          </View>
 
-      <FormLogin />
+          <Text style={[styles.title, { color: colors.textPrimary }]}>
+            Bem-vindo(a)
+          </Text>
+          <Text style={[styles.description, { color: colors.textPrimary }]}>
+            Entre com seu email e senha
+          </Text>
 
-      <Text style={[styles.footer, { color: colors.text }]}>
-        Ao entrar, você concorda com nossos Termos de Serviço.
+          <FormLogin />
 
-      </Text>
+          <Text style={[styles.footer, { color: colors.text }]}>
+            Ao entrar, você concorda com nossos Termos de Serviço.
+          </Text>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
+  scroll: {
+    flexGrow: 1,
+  },
+
   logoContainer: {
     alignItems: "center",
   },
@@ -56,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 26,
     textAlign: "center",
     fontSize: 12,
-  }
+  },
 });
 
 export default Login;

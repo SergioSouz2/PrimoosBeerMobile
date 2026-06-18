@@ -7,6 +7,9 @@ import {
     ActivityIndicator,
     Alert,
     Image,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
@@ -54,7 +57,6 @@ export default function Configurar2FA() {
 
         setVerificando(true);
 
-        // Cria o challenge
         const { data: challengeData, error: challengeError } = await supabase.auth.mfa.challenge({ factorId });
 
         if (challengeError || !challengeData) {
@@ -63,7 +65,6 @@ export default function Configurar2FA() {
             return;
         }
 
-        // Verifica o código
         const { error: verifyError } = await supabase.auth.mfa.verify({
             factorId,
             challengeId: challengeData.id,
@@ -97,60 +98,69 @@ export default function Configurar2FA() {
 
     return (
         <ScreenContainer>
-            <Text style={s.title}>Configurar 2FA</Text>
-            <Text style={s.subtitle}>
-                Escaneie o QR code abaixo com o Google Authenticator ou Authy para ativar a autenticação em dois fatores.
-            </Text>
-
-            {/* QR Code */}
-            {qrCode && (
-                <View style={s.qrContainer}>
-                    <Image
-                        source={{ uri: qrCode }}
-                        style={s.qrCode}
-                        resizeMode="contain"
-                    />
-                </View>
-            )}
-
-            {/* Chave manual */}
-            {secret && (
-                <View style={[s.secretBox, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                    <Text style={[s.secretLabel, { color: colors.textSecondary }]}>
-                        Ou insira a chave manualmente:
-                    </Text>
-                    <Text style={[s.secretText, { color: colors.textPrimary }]} selectable>
-                        {secret}
-                    </Text>
-                </View>
-            )}
-
-            {/* Input do código */}
-            <Text style={[s.inputLabel, { color: colors.textSecondary }]}>
-                Digite o código gerado pelo app para confirmar:
-            </Text>
-            <TextInput
-                style={[s.input, { backgroundColor: colors.inputBackground, borderColor: colors.border, color: colors.textPrimary }]}
-                placeholder="000000"
-                placeholderTextColor={colors.textSecondary}
-                value={codigo}
-                onChangeText={(t) => setCodigo(t.replace(/\D/g, "").slice(0, 6))}
-                keyboardType="number-pad"
-                maxLength={6}
-                textAlign="center"
-            />
-
-            <TouchableOpacity
-                style={[s.btn, { backgroundColor: colors.primary }]}
-                onPress={handleVerificar}
-                disabled={verificando}
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "android" ? 24 : 0}
             >
-                {verificando ? (
-                    <ActivityIndicator color="#fff" />
-                ) : (
-                    <Text style={s.btnText}>Confirmar e ativar</Text>
-                )}
-            </TouchableOpacity>
+                <ScrollView
+                    contentContainerStyle={{ paddingBottom: 24 }}
+                    keyboardShouldPersistTaps="handled"
+                    showsVerticalScrollIndicator={false}
+                >
+                    <Text style={s.title}>Configurar 2FA</Text>
+                    <Text style={s.subtitle}>
+                        Escaneie o QR code abaixo com o Google Authenticator ou Authy para ativar a autenticação em dois fatores.
+                    </Text>
+
+                    {qrCode && (
+                        <View style={s.qrContainer}>
+                            <Image
+                                source={{ uri: qrCode }}
+                                style={s.qrCode}
+                                resizeMode="contain"
+                            />
+                        </View>
+                    )}
+
+                    {secret && (
+                        <View style={[s.secretBox, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                            <Text style={[s.secretLabel, { color: colors.textSecondary }]}>
+                                Ou insira a chave manualmente:
+                            </Text>
+                            <Text style={[s.secretText, { color: colors.textPrimary }]} selectable>
+                                {secret}
+                            </Text>
+                        </View>
+                    )}
+
+                    <Text style={[s.inputLabel, { color: colors.textSecondary }]}>
+                        Digite o código gerado pelo app para confirmar:
+                    </Text>
+                    <TextInput
+                        style={[s.input, { backgroundColor: colors.inputBackground, borderColor: colors.border, color: colors.textPrimary }]}
+                        placeholder="000000"
+                        placeholderTextColor={colors.textSecondary}
+                        value={codigo}
+                        onChangeText={(t) => setCodigo(t.replace(/\D/g, "").slice(0, 6))}
+                        keyboardType="number-pad"
+                        maxLength={6}
+                        textAlign="center"
+                    />
+
+                    <TouchableOpacity
+                        style={[s.btn, { backgroundColor: colors.primary }]}
+                        onPress={handleVerificar}
+                        disabled={verificando}
+                    >
+                        {verificando ? (
+                            <ActivityIndicator color="#fff" />
+                        ) : (
+                            <Text style={s.btnText}>Confirmar e ativar</Text>
+                        )}
+                    </TouchableOpacity>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </ScreenContainer>
     );
 }

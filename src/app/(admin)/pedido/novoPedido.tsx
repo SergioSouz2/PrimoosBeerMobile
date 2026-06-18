@@ -77,12 +77,18 @@ export default function NovoPedido() {
                 preco_unitario: item.preco,
             }));
 
-            const { error: erroItens } = await supabase
+           const { error: erroItens } = await supabase
                 .from("pedido_itens")
                 .insert(itensParaInserir);
 
             if (erroItens) {
-                Alert.alert("Erro", "Não foi possível salvar os itens do pedido.");
+                await supabase.from("pedidos").delete().eq("id", pedido.id);
+
+                const mensagem = erroItens.message.includes("Estoque insuficiente")
+                    ? "Um ou mais produtos não têm estoque suficiente."
+                    : "Não foi possível salvar os itens do pedido.";
+
+                Alert.alert("Erro", mensagem);
                 return;
             }
 

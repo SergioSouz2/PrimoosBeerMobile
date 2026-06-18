@@ -6,6 +6,8 @@ import { useState } from "react";
 import {
     ActivityIndicator,
     Alert,
+    KeyboardAvoidingView,
+    Platform,
     StyleSheet,
     Text,
     TextInput,
@@ -29,7 +31,6 @@ export default function Verificar2FA() {
 
         setVerificando(true);
 
-        // Cria o challenge
         const { data: challengeData, error: challengeError } = await supabase.auth.mfa.challenge({ factorId });
 
         if (challengeError || !challengeData) {
@@ -38,7 +39,6 @@ export default function Verificar2FA() {
             return;
         }
 
-        // Verifica o código
         const { error: verifyError } = await supabase.auth.mfa.verify({
             factorId,
             challengeId: challengeData.id,
@@ -53,7 +53,6 @@ export default function Verificar2FA() {
             return;
         }
 
-        // Autenticação completa — redireciona
         router.replace("/");
     }
 
@@ -66,47 +65,52 @@ export default function Verificar2FA() {
 
     return (
         <ScreenContainer>
-            <View style={s.content}>
-                {/* Ícone */}
-                <View style={[s.iconCircle, { backgroundColor: colors.primary + "22" }]}>
-                    <Text style={{ fontSize: 36 }}>🔐</Text>
-                </View>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "android" ? 24 : 0}
+            >
+                <View style={s.content}>
+                    <View style={[s.iconCircle, { backgroundColor: colors.primary + "22" }]}>
+                        <Text style={{ fontSize: 36 }}>🔐</Text>
+                    </View>
 
-                <Text style={s.title}>Verificação em duas etapas</Text>
-                <Text style={[s.subtitle, { color: colors.textSecondary }]}>
-                    Abra o Google Authenticator ou Authy e digite o código de 6 dígitos gerado para este app.
-                </Text>
-
-                <TextInput
-                    style={[s.input, { backgroundColor: colors.inputBackground, borderColor: colors.border, color: colors.textPrimary }]}
-                    placeholder="000000"
-                    placeholderTextColor={colors.textSecondary}
-                    value={codigo}
-                    onChangeText={(t) => setCodigo(t.replace(/\D/g, "").slice(0, 6))}
-                    keyboardType="number-pad"
-                    maxLength={6}
-                    textAlign="center"
-                    autoFocus
-                />
-
-                <TouchableOpacity
-                    style={[s.btn, { backgroundColor: colors.primary }]}
-                    onPress={handleVerificar}
-                    disabled={verificando}
-                >
-                    {verificando ? (
-                        <ActivityIndicator color="#fff" />
-                    ) : (
-                        <Text style={s.btnText}>Verificar</Text>
-                    )}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={handleCancelar} style={s.btnCancelar}>
-                    <Text style={[s.btnCancelarText, { color: colors.textSecondary }]}>
-                        Cancelar e voltar ao login
+                    <Text style={s.title}>Verificação em duas etapas</Text>
+                    <Text style={[s.subtitle, { color: colors.textSecondary }]}>
+                        Abra o Google Authenticator ou Authy e digite o código de 6 dígitos gerado para este app.
                     </Text>
-                </TouchableOpacity>
-            </View>
+
+                    <TextInput
+                        style={[s.input, { backgroundColor: colors.inputBackground, borderColor: colors.border, color: colors.textPrimary }]}
+                        placeholder="000000"
+                        placeholderTextColor={colors.textSecondary}
+                        value={codigo}
+                        onChangeText={(t) => setCodigo(t.replace(/\D/g, "").slice(0, 6))}
+                        keyboardType="number-pad"
+                        maxLength={6}
+                        textAlign="center"
+                        autoFocus
+                    />
+
+                    <TouchableOpacity
+                        style={[s.btn, { backgroundColor: colors.primary }]}
+                        onPress={handleVerificar}
+                        disabled={verificando}
+                    >
+                        {verificando ? (
+                            <ActivityIndicator color="#fff" />
+                        ) : (
+                            <Text style={s.btnText}>Verificar</Text>
+                        )}
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={handleCancelar} style={s.btnCancelar}>
+                        <Text style={[s.btnCancelarText, { color: colors.textSecondary }]}>
+                            Cancelar e voltar ao login
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
         </ScreenContainer>
     );
 }

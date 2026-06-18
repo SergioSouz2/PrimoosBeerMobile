@@ -104,7 +104,7 @@ export default function ProdutoDetalhe() {
   async function handleExcluir() {
     Alert.alert(
       "Excluir produto",
-      `Tem certeza que deseja excluir "${produto?.nome}"?`,
+      `Tem certeza que deseja excluir "${produto?.nome}"?\n\nO produto será removido da loja, mas o histórico de vendas será preservado.`,
       [
         { text: "Cancelar", style: "cancel" },
         {
@@ -112,7 +112,10 @@ export default function ProdutoDetalhe() {
           style: "destructive",
           onPress: async () => {
             setExcluindo(true);
-            const { error } = await supabase.from("produtos").delete().eq("id", id);
+            const { error } = await supabase
+              .from("produtos")
+              .update({ ativo: false })
+              .eq("id", id);
             setExcluindo(false);
 
             if (error) {
@@ -125,7 +128,7 @@ export default function ProdutoDetalhe() {
         },
       ]
     );
-  }
+}
 
   function handleCancelarEdicao() {
     if (!produto) return;
